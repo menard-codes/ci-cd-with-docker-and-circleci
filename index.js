@@ -1,10 +1,4 @@
-const app = require("express")();
+const server = require("./main.js");
+const PORT = process.env.PORT || 3000;
 
-const PORT = 3000;
-
-app.get("/", (req, res) => {
-    res.json({message: "hello world"});
-});
-
-// app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
-module.exports = app;
+server.listen(PORT, () => console.log(`Listening to port ${PORT}`));
