@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Deploy to Linode
           command: |
-            ssh -o StrictHostKeyChecking=no root@139.177.184.230 "/bin/bash ./update.sh $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+            ssh -o StrictHostKeyChecking=no root@139.177.184.230 "/bin/bash ./update.sh $DOCKERHUB_USERNAME/$IMAGE_NAME:latest"
 
 workflows:
   sample:
