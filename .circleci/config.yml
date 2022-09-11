@@ -23,9 +23,10 @@ jobs:
             docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-      # - run:
-      #     name: Deploy to Linode
-      #     command: <DEPLOYMENT COMMAND TO LINODE WITH THE UPDATE SCRIPT>
+      - run:
+          name: Deploy to Linode
+          command: |
+            ssh -o StrictHostKeyChecking=no root@139.177.184.230 "/bin/bash ./update.sh $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
 workflows:
   sample:
