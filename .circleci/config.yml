@@ -27,5 +27,4 @@ jobs:
 workflows:
   sample:
     jobs:
-      # - build-and-test
-      - node/test
+      - build
