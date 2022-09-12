@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  build:
+  test-and-build:
     docker:
       - image: cimg/node:18.8.0
     steps:
@@ -46,10 +46,10 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build
+      - test-and-build
       - deploy:
           requires:
-          - build # only deploy once build job has completed
+          - test-and-build # only deploy once test-and-build job has completed
           filters:
             branches:
                 only: main # only deploy on the main branch
