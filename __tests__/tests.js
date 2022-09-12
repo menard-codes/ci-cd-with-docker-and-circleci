@@ -8,6 +8,6 @@ describe('test the endpoint', () => {
         expect(res.status).toEqual(200);
         expect(res.type).toEqual(expect.stringContaining('json'));
         expect(res.body).toHaveProperty('message');
-        expect(res.body.message).toEqual('hello world!!!');
+        expect(res.body.message).toEqual('hello world!');
     })
 })
