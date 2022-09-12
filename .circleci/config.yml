@@ -14,7 +14,6 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-      # TODO: Work on this later
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -23,12 +22,34 @@ jobs:
             docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-      - run:
-          name: Deploy to Linode
-          command: |
-            ssh -o StrictHostKeyChecking=no root@139.177.184.230 "/bin/bash ./update.sh $DOCKERHUB_USERNAME/$IMAGE_NAME:latest"
+      # What I'm thinking on this one:
+      # create a new job with another executor (maybe ubuntu), write this script and run:
+        # #!/usr/bin/expect -f
+        # spawn ssh linuxhint@192.168.1.103
+        # expect "Password:*"
+        # send "passwordhere\r"
+        # expect "$ "
+        # interact
+      # - run:
+      #     name: Deploy to Linode
+      #     command: |
+      #       ssh -o StrictHostKeyChecking=no root@139.177.184.230 "/bin/bash ./update.sh $DOCKERHUB_USERNAME/$IMAGE_NAME:latest"
+    deploy:
+      machine:
+          enabled: true
+      steps:
+          - run:
+              name: Deploy Over SSH
+              command: |
+                ssh $SSH_ROOT_USER@$SSH_HOST ./update.sh
 
 workflows:
-  sample:
+  build-and-deploy:
     jobs:
       - build
+      - deploy:
+          requires:
+          - build # only deploy once build job has completed
+          filters:
+            branches:
+                only: main # only deploy on the main branch
