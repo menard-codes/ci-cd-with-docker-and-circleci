@@ -33,7 +33,8 @@ jobs:
           name: Deploy Over SSH
           command: |
             ssh-keyscan 139.177.184.230 >> ~/.ssh/known_hosts
-            ssh root@139.177.184.230 ./update.sh
+            echo hello world
+            # ssh root@139.177.184.230 ./update.sh
 
 workflows:
   build-and-deploy:
