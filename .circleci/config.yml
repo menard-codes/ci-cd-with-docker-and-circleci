@@ -26,6 +26,9 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "57:ea:13:70:bf:ac:1c:d6:76:16:79:91:3d:1c:38:8c"
       - run:
           name: Deploy Over SSH
           command: |
