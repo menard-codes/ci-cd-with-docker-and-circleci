@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  build:
+  test-and-build:
     docker:
       - image: cimg/node:18.8.0
     steps:
@@ -19,9 +19,9 @@ jobs:
       - run:
           name: Build and push the docker image
           command: |
-            docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
+            docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:$TAG .
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+            docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:$TAG
   deploy:
     machine:
       image: ubuntu-2004:current
@@ -30,18 +30,18 @@ jobs:
           fingerprints:
             - "57:ea:13:70:bf:ac:1c:d6:76:16:79:91:3d:1c:38:8c"
       - run:
-          name: Deploy Over SSH
+          name: Deploy to Linode
           command: |
-            ssh-keyscan 139.177.184.230 >> ~/.ssh/known_hosts
-            ssh root@139.177.184.230 ./update.sh
+            ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+            ssh root@$SSH_HOST ./update.sh $DOCKERHUB_USERNAME $IMAGE_NAME $TAG
 
 workflows:
   build-and-deploy:
     jobs:
-      - build
+      - test-and-build
       - deploy:
           requires:
-          - build # only deploy once build job has completed
+          - test-and-build # only deploy once build job has completed
           filters:
             branches:
                 only: main # only deploy on the main branch
