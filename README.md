@@ -1,4 +1,4 @@
-# C/CD with Docker and CircleCI demo app
+# CI/CD with Docker and CircleCI demo app
 
 In this demo app, I built a simple Hello World Node.js REST API, dockerized it, and made a CI/CD pipeline with CircleCI.
 
