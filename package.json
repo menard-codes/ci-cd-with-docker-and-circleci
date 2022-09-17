@@ -1,5 +1,5 @@
 {
-  "name": "for_circleci",
+  "name": "ci-cd-with-docker-and-circleci",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
