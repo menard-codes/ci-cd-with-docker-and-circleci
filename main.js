@@ -1,7 +1,7 @@
 const app = require("express")();
 
 app.get("/", (req, res) => {
-    res.json({message: "hello world!"});
+    res.json({message: "goodbye world!"});
 });
 
 module.exports = app;
